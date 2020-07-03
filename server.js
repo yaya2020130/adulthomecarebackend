@@ -22,7 +22,7 @@ var db = require("./models");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors({
-  origin:["https://daya-project.herokuapp.com/"],
+  origin:["deployed site"],
   credentials:true
 }));
 
