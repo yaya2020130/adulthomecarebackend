@@ -26,6 +26,11 @@ app.use(cors({
   credentials:true
 }));
 
+
+app.get("/", (req, res) => {
+  res.send("welcome to my api!")
+})
+
 // signup page
 app.post("/api/signup", ({ body: { username, password, isAdmin } }, res) => {
 
