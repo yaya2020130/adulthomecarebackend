@@ -13,7 +13,7 @@ require("dotenv").config();
 // Sets up the Express App
 // =============================================================
 var app = express();
-var PORT = process.env.PORT;
+var PORT = process.env.PORT || 8080;
 
 // Requiring our models for syncing
 var db = require("./models");
@@ -22,13 +22,44 @@ var db = require("./models");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors({
-  origin:[" https://adulthomecare-frontend2.herokuapp.com/"],
-  credentials:true
+  // origin:[" https://adulthomecare-frontend2.herokuapp.com/"],
+  // credentials:true
 }));
 
 
 app.get("/", (req, res) => {
-  res.send("welcome to my api!")
+  res.send("welcome to my page!")
+})
+
+
+
+app.post("/login", (req, res) => {
+  db.User.findOne({
+    where: {
+      username: req.body.username
+    }
+  }).then(dbUser => {
+    if (!dbUser) {
+      req.session.user = false;
+      res.send("no user found")
+
+    } else if (bcrypt.compareSync(req.body.password, dbUser.password)) {
+      //    res.send("logged in")
+      req.session.user = {
+        id: dbUser.id,
+        username: dbUser.username,
+        isAdmin: dbUser.isAdmin
+      }
+      console.log(req.session.user)
+      res.json(req.session)
+    } else {
+      req.session.user = false
+      res.send("incorrect password")
+    }
+  }).catch(err => {
+    
+    res.status(500);
+  })
 })
 
 // signup page
