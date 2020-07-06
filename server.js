@@ -21,8 +21,9 @@ var db = require("./models");
 // Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cors(
-  {
+
+
+app.use(cors({
   origin:[" https://adulthomecare-frontend2.herokuapp.com"],
   credentials:true
 }
@@ -160,7 +161,7 @@ app.post('/api/logbook', (req, res) => {
 
 
 // Get one patient By id
-app.get('/patient/:id', (req, res) => {
+app.get('patients/:id', (req, res) => {
   const id = req.params.id;
   db.Patient.findOne({
     where: { id: id }
