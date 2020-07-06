@@ -23,7 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors(
   {
-  origin:[" https://adulthomecare-frontend2.herokuapp.com/"],
+  origin:[" https://adulthomecare-frontend2.herokuapp.com"],
   credentials:true
 }
 ));
