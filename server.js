@@ -21,18 +21,34 @@ var db = require("./models");
 // Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cors({
+app.use(cors(
+  {
   origin:[" https://adulthomecare-frontend2.herokuapp.com/"],
   credentials:true
-}));
+}
+));
 
 
 app.get("/", (req, res) => {
   res.send("welcome to my page!")
 })
+app.use(session(
+  {
+    secret: process.env.SESSION_SECRET,
+    store: new SequelizeStore({
+      db: db.sequelize
+    }),
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      maxAge: 2 * 60 * 60 * 1000
+    }
+  }));
 
 
-
+  app.get("/", (req, res) => {
+    res.send("Wellcome to my page")
+  })
 app.post("/login", (req, res) => {
   db.User.findOne({
     where: {
@@ -57,7 +73,7 @@ app.post("/login", (req, res) => {
       res.send("incorrect password")
     }
   }).catch(err => {
-    
+    req.session.user = false;
     res.status(500);
   })
 })
